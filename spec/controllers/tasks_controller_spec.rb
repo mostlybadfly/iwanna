@@ -9,10 +9,6 @@ RSpec.describe TasksController, type: :controller do
     { :name => 'eat ramen', :activity => 'food' }
   }
 
-  let(:invalid_attributes) {
-    { :name => 1, :activity => 2 }
-  }
-
   # This should return the minimal set of values that should be in the session
   # in order to pass any filters (e.g. authentication) defined in
   # TasksController. Be sure to keep this updated too.
@@ -68,31 +64,19 @@ RSpec.describe TasksController, type: :controller do
         expect(response).to redirect_to(Task.last)
       end
     end
-
-    context "with invalid params" do
-      it "assigns a newly created but unsaved task as @task" do
-        post :create, {:task => invalid_attributes}, valid_session
-        expect(assigns(:task)).to be_a_new(Task)
-      end
-
-      it "re-renders the 'new' template" do
-        post :create, {:task => invalid_attributes}, valid_session
-        expect(response).to render_template("new")
-      end
-    end
   end
 
   describe "PUT #update" do
     context "with valid params" do
       let(:new_attributes) {
-        skip("Add a hash of attributes valid for your model")
+        { :name => "go bowling", :activity => "sports"}
       }
 
       it "updates the requested task" do
         task = Task.create! valid_attributes
         put :update, {:id => task.to_param, :task => new_attributes}, valid_session
         task.reload
-        skip("Add assertions for updated state")
+        expect(task.name).to eq('go bowling')
       end
 
       it "assigns the requested task as @task" do
@@ -105,20 +89,6 @@ RSpec.describe TasksController, type: :controller do
         task = Task.create! valid_attributes
         put :update, {:id => task.to_param, :task => valid_attributes}, valid_session
         expect(response).to redirect_to(task)
-      end
-    end
-
-    context "with invalid params" do
-      it "assigns the task as @task" do
-        task = Task.create! valid_attributes
-        put :update, {:id => task.to_param, :task => invalid_attributes}, valid_session
-        expect(assigns(:task)).to eq(task)
-      end
-
-      it "re-renders the 'edit' template" do
-        task = Task.create! valid_attributes
-        put :update, {:id => task.to_param, :task => invalid_attributes}, valid_session
-        expect(response).to render_template("edit")
       end
     end
   end
@@ -137,5 +107,4 @@ RSpec.describe TasksController, type: :controller do
       expect(response).to redirect_to(tasks_url)
     end
   end
-
 end
